@@ -18,7 +18,7 @@ done.}
 
 \item{values}{the values to search for.}
 
-\item{useNames}{If \code{\link{NA}}, the default behavior of the function about naming support is remained. If \code{\link{FALSE}}, no naming support is done. Else if \code{\link{TRUE}}, names attributes of result are set.}
+\item{useNames}{If \code{\link{TRUE}} (default), names attributes of result are set. Else if \code{\link{FALSE}}, no naming support is done.}
 }
 \value{
 a \code{\link{numeric}} \code{NxJ} (\code{KxJ})

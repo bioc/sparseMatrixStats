@@ -43,7 +43,7 @@ omitted from the calculations.}
 \item{type}{An integer specifying the type of estimator. See
 \code{stats::\link[stats]{quantile}()}. for more details.}
 
-\item{useNames}{If \code{\link{NA}}, the default behavior of the function about naming support is remained. If \code{\link{FALSE}}, no naming support is done. Else if \code{\link{TRUE}}, names attributes of result are set.}
+\item{useNames}{If \code{\link{TRUE}} (default), names attributes of result are set. Else if \code{\link{FALSE}}, no naming support is done.}
 
 \item{drop}{If \code{TRUE} a vector is returned if \code{J == 1}.}
 }
