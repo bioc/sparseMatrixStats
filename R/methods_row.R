@@ -61,6 +61,9 @@ setMethod("rowMedians", signature(x = "dgCMatrix"),
 #' @export
 setMethod("rowVars", signature(x = "xgCMatrix"),
           function(x, rows = NULL, cols = NULL, na.rm=FALSE, center = NULL, useNames = TRUE){
+  if(! is.null(center) && length(center) != nrow(x)){
+    stop("Argument 'center' must be the same length as number of rows of 'x': ", length(center), "!=", nrow(x))
+  }
   if(! is.null(rows)){
     x <- x[rows, , drop = FALSE]
   }
@@ -78,6 +81,9 @@ setMethod("rowVars", signature(x = "xgCMatrix"),
 #' @export
 setMethod("rowSds", signature(x = "xgCMatrix"),
           function(x, rows = NULL, cols = NULL, na.rm=FALSE, center = NULL, useNames = TRUE){
+  if(! is.null(center) && length(center) != nrow(x)){
+    stop("Argument 'center' must be the same length as number of rows of 'x': ", length(center), "!=", nrow(x))
+  }
   if(! is.null(rows)){
     x <- x[rows, , drop = FALSE]
   }
@@ -95,6 +101,9 @@ setMethod("rowSds", signature(x = "xgCMatrix"),
 #' @export
 setMethod("rowMads", signature(x = "dgCMatrix"),
           function(x, rows = NULL, cols = NULL, center = NULL, constant = 1.4826, na.rm=FALSE, useNames = TRUE){
+  if(! is.null(center) && length(center) != nrow(x)){
+    stop("Argument 'center' must be the same length as number of rows of 'x': ", length(center), "!=", nrow(x))
+  }
   colMads(t(x), rows = cols, cols = rows, center = center, constant = constant, na.rm = na.rm, useNames = useNames)
 })
 
