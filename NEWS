@@ -1,3 +1,10 @@
+Changes in version 1.15
++ Throw error if length of 'center' in colVars, colSds, colMads (and
+corrresponding row-functions) does not match size of 'x'.
+This behavior was never supported by `sparseMatrixStats` and previously
+could return incorrect results. This change matches the upcoming behavior of
+matrixStats (https://github.com/HenrikBengtsson/matrixStats/issues/254).
+
 
 Changes in version 1.13
 + Make sparseMatrixStats compatible with matrixStats release v1.0.0.
