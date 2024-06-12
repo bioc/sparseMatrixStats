@@ -1,6 +1,6 @@
 Changes in version 1.17
 + Fix handling of missing values in `rowSums2` if `cols` is a boolean vector
-+ Implement optimized code path for `rowSums2` if `cols` is an integer vector
++ Implement optimized code path for `rowSums2` and `rowMeans2` if `cols` is provided
 
 Changes in version 1.15
 + Throw error if length of 'center' in colVars, colSds, colMads (and
