@@ -345,6 +345,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// dgCMatrix_rowSums2_int_col_select
+NumericVector dgCMatrix_rowSums2_int_col_select(S4 matrix, bool na_rm, IntegerVector col_selector);
+RcppExport SEXP _sparseMatrixStats_dgCMatrix_rowSums2_int_col_select(SEXP matrixSEXP, SEXP na_rmSEXP, SEXP col_selectorSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< S4 >::type matrix(matrixSEXP);
+    Rcpp::traits::input_parameter< bool >::type na_rm(na_rmSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type col_selector(col_selectorSEXP);
+    rcpp_result_gen = Rcpp::wrap(dgCMatrix_rowSums2_int_col_select(matrix, na_rm, col_selector));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -402,6 +412,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_sparseMatrixStats_quantile_sparse", (DL_FUNC) &_sparseMatrixStats_quantile_sparse, 3},
     {"_sparseMatrixStats_dgCMatrix_rowSums2", (DL_FUNC) &_sparseMatrixStats_dgCMatrix_rowSums2, 2},
     {"_sparseMatrixStats_dgCMatrix_rowSums2_bool_col_select", (DL_FUNC) &_sparseMatrixStats_dgCMatrix_rowSums2_bool_col_select, 3},
+    {"_sparseMatrixStats_dgCMatrix_rowSums2_int_col_select", (DL_FUNC) &_sparseMatrixStats_dgCMatrix_rowSums2_int_col_select, 3},
     {"_sparseMatrixStats_dgCMatrix_rowMeans2", (DL_FUNC) &_sparseMatrixStats_dgCMatrix_rowMeans2, 2},
     {"_sparseMatrixStats_dgCMatrix_rowVars", (DL_FUNC) &_sparseMatrixStats_dgCMatrix_rowVars, 3},
     {NULL, NULL, 0}

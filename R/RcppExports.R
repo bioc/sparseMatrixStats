@@ -108,6 +108,9 @@ dgCMatrix_rowSums2 <- function(matrix, na_rm) {
 dgCMatrix_rowSums2_bool_col_select <- function(matrix, na_rm, col_selector) {
     .Call('_sparseMatrixStats_dgCMatrix_rowSums2_bool_col_select', PACKAGE = 'sparseMatrixStats', matrix, na_rm, col_selector)
 }
+
+dgCMatrix_rowSums2_int_col_select <- function(matrix, na_rm, col_selector) {
+    .Call('_sparseMatrixStats_dgCMatrix_rowSums2_int_col_select', PACKAGE = 'sparseMatrixStats', matrix, na_rm, col_selector)
 }
 
 dgCMatrix_rowMeans2 <- function(matrix, na_rm) {

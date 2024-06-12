@@ -11,6 +11,8 @@ setMethod("rowSums2", signature(x = "xgCMatrix"),
   }
   if(is.logical(cols) && length(cols) == ncol(x)){
     set_result_names_t(dgCMatrix_rowSums2_bool_col_select(x, na_rm = na.rm, col_selector = cols), useNames)
+  }else if(is.integer(cols) || is.numeric(cols)){
+    set_result_names_t(dgCMatrix_rowSums2_int_col_select(x, na_rm = na.rm, col_selector = cols), useNames)
   }else{
     if(! is.null(cols)){
       x <- x[, cols, drop = FALSE]

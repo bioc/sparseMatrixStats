@@ -60,6 +60,36 @@ NumericVector dgCMatrix_rowSums2_bool_col_select(S4 matrix, bool na_rm, LogicalV
 
   return wrap(result);
 }
+
+// [[Rcpp::export]]
+NumericVector dgCMatrix_rowSums2_int_col_select(S4 matrix, bool na_rm, IntegerVector col_selector){
+  IntegerVector dim = matrix.slot("Dim");
+  NumericVector values = matrix.slot("x");
+  IntegerVector row_indices = matrix.slot("i");
+  IntegerVector pointers = matrix.slot("p");
+  std::vector<LDOUBLE> result (dim[0], 0.0);
+  int n_cols = dim[1];
+
+  for(int i : col_selector){
+    if(i == NA_INTEGER  && ! na_rm){
+      for(int r = 0; r < dim[0]; ++r){
+        result[r] = NA_REAL;
+      }
+      break;
+    }else if(i == NA_INTEGER && na_rm){
+      // Do nothing
+    }else if(i < 1 || i > n_cols){
+      Rcpp::stop("The values in cols must be between 1 and ncol: " + std::to_string(i));
+    }else{
+      i -= 1;
+      int val_idx = pointers[i];
+      int end_idx = pointers[i + 1];
+      for(;val_idx < end_idx; ++val_idx){
+        if(ISNA(values[val_idx]) && na_rm){
+          // Do nothing
+        }else{
+          result[row_indices[val_idx]] += values[val_idx];
+        }
       }
     }
   }

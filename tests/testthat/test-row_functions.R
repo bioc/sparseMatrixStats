@@ -25,6 +25,12 @@ test_that("rowSums works", {
                MatrixGenerics::rowSums2(mat, rows = row_subset, cols = col_selector))
   expect_equal(rowSums2(sp_mat, cols = col_selector),
                rowSums(mat[,col_selector,drop=FALSE]))
+
+  col_selector <- c(1, 3, 5, NA, 1)
+  expect_equal(rowSums2(sp_mat, rows = row_subset, cols = col_selector),
+               MatrixGenerics::rowSums2(mat, rows = row_subset, cols = col_selector))
+  expect_equal(rowSums2(sp_mat, cols = col_selector),
+               rowSums(mat[,col_selector,drop=FALSE]))
 })
 
 
