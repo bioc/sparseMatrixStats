@@ -38,6 +38,28 @@ test_that("rowMeans works", {
   expect_equal(rowMeans2(sp_mat), MatrixGenerics::rowMeans2(mat))
   expect_equal(rowMeans2(sp_mat, na.rm=TRUE), MatrixGenerics::rowMeans2(mat, na.rm=TRUE))
   expect_equal(rowMeans2(sp_mat, rows = row_subset, cols = col_subset), MatrixGenerics::rowMeans2(mat, rows = row_subset, cols = col_subset))
+  expect_equal(rowMeans2(sp_mat, rows = row_subset, cols = col_subset, na.rm = TRUE),
+               MatrixGenerics::rowMeans2(mat, rows = row_subset, cols = col_subset, na.rm = TRUE))
+
+  col_selector <- sample(c(TRUE, FALSE), size = ncol(mat), replace = TRUE)
+  expect_equal(rowMeans2(sp_mat, rows = row_subset, cols = col_selector), MatrixGenerics::rowMeans2(mat, rows = row_subset, cols = col_selector))
+  expect_equal(rowMeans2(sp_mat, rows = row_subset, cols = col_selector, na.rm=TRUE),
+               MatrixGenerics::rowMeans2(mat, rows = row_subset, cols = col_selector, na.rm=TRUE))
+
+  col_selector[2] <- NA
+  expect_equal(rowSums2(sp_mat, rows = row_subset, cols = col_selector),
+               MatrixGenerics::rowSums2(mat, rows = row_subset, cols = col_selector))
+  expect_equal(rowSums2(sp_mat, cols = col_selector),
+               rowSums(mat[,col_selector,drop=FALSE]))
+
+
+  col_selector <- c(1, 3, 5, NA, 1)
+  expect_equal(rowMeans2(sp_mat, rows = row_subset, cols = col_selector),
+               MatrixGenerics::rowMeans2(mat, rows = row_subset, cols = col_selector))
+  expect_equal(rowMeans2(sp_mat, rows = row_subset, cols = col_selector, na.rm=TRUE),
+               MatrixGenerics::rowMeans2(mat, rows = row_subset, cols = col_selector, na.rm=TRUE))
+  expect_equal(rowSums2(sp_mat, cols = col_selector),
+               rowSums(mat[,col_selector,drop=FALSE]))
 })
 
 

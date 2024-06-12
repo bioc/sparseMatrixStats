@@ -117,6 +117,14 @@ dgCMatrix_rowMeans2 <- function(matrix, na_rm) {
     .Call('_sparseMatrixStats_dgCMatrix_rowMeans2', PACKAGE = 'sparseMatrixStats', matrix, na_rm)
 }
 
+dgCMatrix_rowMeans2_bool_col_select <- function(matrix, na_rm, col_selector) {
+    .Call('_sparseMatrixStats_dgCMatrix_rowMeans2_bool_col_select', PACKAGE = 'sparseMatrixStats', matrix, na_rm, col_selector)
+}
+
+dgCMatrix_rowMeans2_int_col_select <- function(matrix, na_rm, col_selector) {
+    .Call('_sparseMatrixStats_dgCMatrix_rowMeans2_int_col_select', PACKAGE = 'sparseMatrixStats', matrix, na_rm, col_selector)
+}
+
 dgCMatrix_rowVars <- function(matrix, na_rm, center) {
     .Call('_sparseMatrixStats_dgCMatrix_rowVars', PACKAGE = 'sparseMatrixStats', matrix, na_rm, center)
 }

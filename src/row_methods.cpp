@@ -55,6 +55,8 @@ NumericVector dgCMatrix_rowSums2_bool_col_select(S4 matrix, bool na_rm, LogicalV
         result[r] = NA_REAL;
       }
       break;
+    }else if(col_selector[i] == NA_LOGICAL  && na_rm){
+      // Do nothing
     }
   }
 
@@ -126,6 +128,111 @@ NumericVector dgCMatrix_rowMeans2(S4 matrix, bool na_rm){
   auto na_count_end = nas_per_row.end();
   while(res_iter != res_end && na_count_iter != na_count_end){
     *res_iter = *res_iter / (dim[1] - *na_count_iter);
+    ++res_iter;
+    ++na_count_iter;
+  }
+
+  return wrap(result);
+}
+
+
+// [[Rcpp::export]]
+NumericVector dgCMatrix_rowMeans2_bool_col_select(S4 matrix, bool na_rm, LogicalVector col_selector){
+  IntegerVector dim = matrix.slot("Dim");
+  NumericVector values = matrix.slot("x");
+  IntegerVector row_indices = matrix.slot("i");
+  IntegerVector pointers = matrix.slot("p");
+  std::vector<LDOUBLE> result (dim[0], 0.0);
+  std::vector<int> nas_per_row (dim[0], 0);
+  int n_cols = dim[1];
+
+  for(int i = 0; i < n_cols; ++i){
+    if(col_selector[i] == 1){
+      int val_idx = pointers[i];
+      int end_idx = pointers[i + 1];
+      for(;val_idx < end_idx; ++val_idx){
+        if(ISNA(values[val_idx]) && na_rm){
+          nas_per_row[row_indices[val_idx]] += 1;
+        }else{
+          result[row_indices[val_idx]] += values[val_idx];
+        }
+      }
+    }else if(col_selector[i] == NA_LOGICAL  && ! na_rm){
+      for(int r = 0; r < dim[0]; ++r){
+        result[r] = NA_REAL;
+      }
+      break;
+    }else if(col_selector[i] == NA_LOGICAL  && na_rm){
+      for(int r = 0; r < dim[0]; ++r){
+        nas_per_row[r] += 1;
+      }
+    }
+  }
+
+
+  auto res_iter = result.begin();
+  auto res_end = result.end();
+  auto na_count_iter = nas_per_row.begin();
+  auto na_count_end = nas_per_row.end();
+  int n_eff_cols = 0;
+  for(int c : col_selector){
+    n_eff_cols += (c == 1);
+  }
+  while(res_iter != res_end && na_count_iter != na_count_end){
+    *res_iter = *res_iter / (n_eff_cols - *na_count_iter);
+    ++res_iter;
+    ++na_count_iter;
+  }
+
+  return wrap(result);
+}
+
+
+// [[Rcpp::export]]
+NumericVector dgCMatrix_rowMeans2_int_col_select(S4 matrix, bool na_rm, IntegerVector col_selector){
+  IntegerVector dim = matrix.slot("Dim");
+  NumericVector values = matrix.slot("x");
+  IntegerVector row_indices = matrix.slot("i");
+  IntegerVector pointers = matrix.slot("p");
+  std::vector<LDOUBLE> result (dim[0], 0.0);
+  std::vector<int> nas_per_row (dim[0], 0);
+  int n_cols = dim[1];
+
+  // This for loop is a modified version of dgCMatrix_rowSums2_int_col_select
+  for(int i : col_selector){
+    if(! na_rm && i == NA_INTEGER){
+      for(int r = 0; r < dim[0]; ++r){
+        result[r] = NA_REAL;
+      }
+      break;
+    }else if(na_rm && i == NA_INTEGER){
+      for(int r = 0; r < dim[0]; ++r){
+        nas_per_row[r] += 1;
+      }
+    }else if(i < 1 || i > n_cols){
+      Rcpp::stop("The values in cols must be between 1 and ncol: " + std::to_string(i));
+    }else{
+      i -= 1;
+      int val_idx = pointers[i];
+      int end_idx = pointers[i + 1];
+      for(;val_idx < end_idx; ++val_idx){
+        if(na_rm && ISNA(values[val_idx])){
+          nas_per_row[row_indices[val_idx]] += 1;
+        }else{
+          result[row_indices[val_idx]] += values[val_idx];
+        }
+      }
+    }
+  }
+
+
+  auto res_iter = result.begin();
+  auto res_end = result.end();
+  auto na_count_iter = nas_per_row.begin();
+  auto na_count_end = nas_per_row.end();
+  int n_eff_cols = col_selector.length();
+  while(res_iter != res_end && na_count_iter != na_count_end){
+    *res_iter = *res_iter / (n_eff_cols - *na_count_iter);
     ++res_iter;
     ++na_count_iter;
   }
