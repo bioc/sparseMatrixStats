@@ -12,9 +12,19 @@ test_that("rowSums works", {
   expect_equal(rowSums2(sp_mat), MatrixGenerics::rowSums2(mat))
   expect_equal(rowSums2(sp_mat, na.rm=TRUE), MatrixGenerics::rowSums2(mat, na.rm=TRUE))
   expect_equal(rowSums2(sp_mat, rows = row_subset, cols = col_subset), MatrixGenerics::rowSums2(mat, rows = row_subset, cols = col_subset))
+  expect_equal(rowSums2(sp_mat, rows = row_subset, cols = col_subset, na.rm=TRUE),
+               MatrixGenerics::rowSums2(mat, rows = row_subset, cols = col_subset, na.rm=TRUE))
 
   col_selector <- sample(c(TRUE, FALSE), size = ncol(mat), replace = TRUE)
   expect_equal(rowSums2(sp_mat, rows = row_subset, cols = col_selector), MatrixGenerics::rowSums2(mat, rows = row_subset, cols = col_selector))
+  expect_equal(rowSums2(sp_mat, rows = row_subset, cols = col_selector, na.rm=TRUE),
+               MatrixGenerics::rowSums2(mat, rows = row_subset, cols = col_selector, na.rm=TRUE))
+
+  col_selector[2] <- NA
+  expect_equal(rowSums2(sp_mat, rows = row_subset, cols = col_selector),
+               MatrixGenerics::rowSums2(mat, rows = row_subset, cols = col_selector))
+  expect_equal(rowSums2(sp_mat, cols = col_selector),
+               rowSums(mat[,col_selector,drop=FALSE]))
 })
 
 
